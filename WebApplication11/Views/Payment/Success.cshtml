@@ -1,0 +1,38 @@
+﻿@model WebApplication11.Models.Reservation
+
+<div class="h-screen flex justify-center items-center bg-cover bg-center"
+     style="background-image: url('https://manager.lbooking.online/CmsImages/hotel_warszawa_spa_(16).jpg');">
+
+    <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">Podsumowanie Zamówienia</h2>
+
+        <div class="space-y-2">
+            
+          
+            <div class="flex justify-between text-gray-700">
+                <span>Przyjazd</span>
+                <span class="font-medium">@Model.StartDate.DayOfWeek  @Model.StartDate.ToString("dd.MM")</span>
+            </div>
+            <div class="flex justify-between text-gray-700">
+                <span>Data wyjazdu</span>
+                <span class="font-medium">@Model.EndDate.DayOfWeek  @Model.EndDate.ToString("dd.MM")</span>
+            </div>
+           
+
+          
+
+        </div>
+
+        <div class="border-t mt-4 pt-2">
+            <div class="flex justify-between text-lg font-semibold text-gray-900">
+                <span>Łączna kwota:</span>
+                <span>@Model.Price</span>
+            </div>
+        </div>
+
+        <button class="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+            Przejdź do płatności
+        </button>
+    </div>
+
+</div>

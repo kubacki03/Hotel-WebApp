@@ -1,0 +1,29 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace WebApplication11.Migrations
+{
+    /// <inheritdoc />
+    public partial class newMig : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn<float>(
+                name: "Price",
+                table: "Reservations",
+                type: "real",
+                nullable: false,
+                defaultValue: 0f);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "Price",
+                table: "Reservations");
+        }
+    }
+}

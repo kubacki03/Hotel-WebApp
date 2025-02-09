@@ -1,0 +1,30 @@
+﻿
+@model List<WebApplication11.Models.Reservation>
+<div class="h-screen flex justify-center items-center bg-cover bg-center"
+     style="background-image: url('https://manager.lbooking.online/CmsImages/hotel_warszawa_spa_(16).jpg');">
+@if(Model !=null){
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 md:px-6 lg:px-12">
+    @foreach (var reservation in Model)
+    {
+        <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200 flex flex-col h-full">
+          
+
+            <div class="p-4 flex-grow">
+                <h3 class="text-xl font-semibold text-gray-900">Data przyjazdu</h3>
+                <p class="text-gray-700 mt-2">@reservation.StartDate</p>
+            </div>
+                <div class="p-4 flex-grow">
+                    <h3 class="text-xl font-semibold text-gray-900">Data wyjazdu</h3>
+                    <p class="text-gray-700 mt-2">@reservation.EndDate</p>
+                </div>
+           
+        </div>
+    }
+</div>
+}else
+    {
+        <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200 flex flex-col h-full">
+    <h1>Brak rezerwacji</h1>
+    </div>
+}
+</div>

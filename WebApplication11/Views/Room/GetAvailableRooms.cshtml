@@ -1,0 +1,110 @@
+﻿@model List<WebApplication11.Models.Room>
+
+    <style>
+    .przycisk {
+        position: relative;
+        z-index: 1;
+    }
+
+        .przycisk::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: tomato;
+            z-index: -1;
+            transition: transform 300ms ease-in-out;
+            transform: scaleX(0);
+            transform-origin: right;
+        }
+
+        .przycisk:hover::before,
+        .przycisk:focus::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+    </style>
+
+
+<div class="h-screen flex justify-center items-center bg-cover bg-center"
+     style="background-image: url('https://manager.lbooking.online/CmsImages/hotel_warszawa_spa_(16).jpg');">
+
+    <form asp-controller="Room" asp-action="getAvailableRooms" method="post"
+          class="bg-white/80 p-8 rounded-lg shadow-xl backdrop-blur-md w-full max-w-lg mx-4 sm:max-w-xl md:max-w-2xl">
+
+        <h2 class="text-3xl font-semibold text-gray-800 text-center mb-6">Wyszukaj Rezerwację</h2>
+
+        <div class="flex flex-wrap space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 mb-6">
+            <div class="flex-1">
+                <label for="date-start" class="block text-gray-700 font-semibold mb-2">Przyjazd</label>
+                <input type="date" name="dateStart" id="date-start" required
+                       class="bg-transparent border-2 border-gray-300 text-gray-700 outline-none px-4 py-2 rounded-md w-full focus:ring-2 focus:ring-amber-600 transition">
+            </div>
+
+            <div class="flex-1">
+                <label for="date-end" class="block text-gray-700 font-semibold mb-2">Wyjazd</label>
+                <input type="date" name="dateEnd" id="date-end" required
+                       class="bg-transparent border-2 border-gray-300 text-gray-700 outline-none px-4 py-2 rounded-md w-full focus:ring-2 focus:ring-amber-600 transition">
+            </div>
+
+            <div class="flex-1">
+                <label for="persons" class="block text-gray-700 font-semibold mb-2">Osoby</label>
+                <input type="number" name="persons" id="persons" required min="1" max="10"
+                       class="bg-transparent border-2 border-gray-300 text-gray-700 outline-none px-4 py-2 rounded-md w-full focus:ring-2 focus:ring-amber-600 transition">
+            </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 text-white bg-amber-700 hover:bg-amber-800 rounded-lg shadow-md font-semibold transition-all duration-300 disabled:opacity-50"
+                id="submitButton" >
+            Szukaj
+        </button>
+    </form>
+</div>
+<h2 id="availableRooms" class="text-2xl font-bold mb-4">Dostępne pokoje</h2>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 md:px-6 lg:px-12">
+    @foreach (var room in Model)
+    {
+        <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200 flex flex-col h-full">
+            <img src="~/images/@(room.Number)room.jpg" alt="Pokój @room.Number" class="w-full h-48 object-cover rounded-lg">
+
+            <div class="p-4 flex-grow">
+                <h3 class="text-xl font-semibold text-gray-900">@room.Type</h3>
+                <p class="text-gray-700 mt-2">@room.Description</p>
+            </div>
+
+            <button onclick="addToCart(@room.Id)" class="przycisk mt-auto px-6 py-2 border-2 border-amber-600 text-amber-600 bg-white rounded-lg font-semibold transition-all duration-300 ease-in-out hover:bg-amber-600 hover:text-white hover:border-amber-600 focus:outline-none w-full sm:w-auto">
+                Dodaj
+            </button>
+        </div>
+    }
+</div>
+
+<script>
+       function addToCart(roomId) {
+        fetch('/Cart/AddToCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+            },
+            body: JSON.stringify({ roomId: roomId })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("Pokój dodany do koszyka!");
+            } else {
+                alert("Wystąpił błąd.");
+            }
+        });
+    }
+    // Funkcja przewija stronę do sekcji availableRooms po załadowaniu strony
+    window.onload = function() {
+        const availableRoomsSection = document.getElementById('availableRooms');
+        if (availableRoomsSection) {
+            availableRoomsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+</script>
