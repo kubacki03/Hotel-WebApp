@@ -22,6 +22,7 @@ public class PaymentController : Controller
         _context = context;
     }
 
+    string API_KEY = Environment.GetEnvironmentVariable("STRIPE_KEY");
 
     [HttpPost]
     [Authorize]
@@ -50,7 +51,7 @@ public class PaymentController : Controller
         }
 
 
-        var client = new Stripe.StripeClient("API_KEY");
+        var client = new Stripe.StripeClient(API_KEY);
         var user = await _userManager.GetUserAsync(User);
     
         var lineItems = new List<SessionLineItemOptions>
@@ -103,7 +104,7 @@ public class PaymentController : Controller
             return RedirectToAction("Cancel");
         }
       
-        var client = new Stripe.StripeClient("API_KEY");
+        var client = new Stripe.StripeClient(API_KEY);
 
         var service = new SessionService(client);
         var session = service.Get(sessionId);
